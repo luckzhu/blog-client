@@ -32,8 +32,8 @@ export default {
 
   > #header {
     grid-area: header;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 12%;
+    padding-right: 12%;
   }
 
   > #main {
@@ -42,8 +42,8 @@ export default {
 
   > #footer {
     grid-area: footer;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 12%;
+    padding-right: 12%;
   }
 }
 
