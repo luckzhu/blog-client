@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header :class="{ login: isLogin, 'no-login': !isLogin }">
     <template v-if="!isLogin">
       <h1>LET'S SHARE</h1>
       <p>精品博客汇聚</p>
@@ -11,6 +11,14 @@
 
     <template v-if="isLogin">
       <h1>LET'S SHARE</h1>
+      <div class="icon-avatar">
+        <i class="icon el-icon-s-custom "></i>
+        <img
+          class="avatar"
+          src="http://cn.gravatar.com/avatar/1?s=128&d=identicon"
+          alt=""
+        />
+      </div>
     </template>
   </header>
 </template>
@@ -27,21 +35,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary-color:#409eff;
+$primary-color: #409eff;
 
 header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  background-color: $primary-color;
   align-items: center;
-  background-color:$primary-color;
-  padding: 20px 0;
-
   > h1 {
     font-size: 40px;
     color: white;
     margin: 20px 0;
   }
+}
+
+header.no-login {
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 20px 0;
   > p {
     color: white;
     margin-bottom: 20px;
@@ -50,6 +61,26 @@ header {
   > .button {
     > .el-button {
       margin: 0 10px;
+    }
+  }
+}
+
+header.login {
+  justify-content: space-between;
+  > .icon-avatar {
+    display: flex;
+    align-items: center;
+    > .icon {
+      color: #fff;
+      font-size: 30px;
+    }
+    > .avatar {
+      width: 45px;
+      height: 45px;
+      margin-left: 15px;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 3px #aaa;
     }
   }
 }
