@@ -24,12 +24,21 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "Header",
   data() {
-    return {
-      isLogin: false
-    };
+    return {};
+  },
+  computed: {
+    ...mapGetters(["user", "isLogin"])
+  },
+  created() {
+    this.checkLogin();
+  },
+  methods: {
+    ...mapActions(["checkLogin", "logout"])
   }
 };
 </script>
