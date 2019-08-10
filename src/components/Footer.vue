@@ -11,13 +11,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/base.scss";
 footer {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px 0;
   font-size: 14px;
-  color: rgb(102, 102, 102);
+  color: $textLighterColor;
   background-color: rgb(215, 215, 215);
 }
 </style>

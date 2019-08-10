@@ -4,20 +4,25 @@
       <h1>LET'S SHARE</h1>
       <p>精品博客汇聚</p>
       <div class="button">
-        <el-button type="primary" plain>立即登陆</el-button>
-        <el-button type="primary" plain>注册账号</el-button>
+        <router-link to="/login"
+          ><el-button type="primary" plain>立即登陆</el-button></router-link
+        >
+        <router-link to="/register">
+          <el-button type="primary" plain>注册账号</el-button></router-link
+        >
       </div>
     </template>
 
     <template v-if="isLogin">
       <h1>LET'S SHARE</h1>
       <div class="icon-avatar">
-        <i class="icon el-icon-s-custom "></i>
         <img
           class="avatar"
           src="http://cn.gravatar.com/avatar/1?s=128&d=identicon"
           alt=""
         />
+        <i class="icon el-icon-s-custom "></i>
+        <i class="icon el-icon-error " @click="onLogout"></i>
       </div>
     </template>
   </header>
@@ -38,21 +43,24 @@ export default {
     this.checkLogin();
   },
   methods: {
-    ...mapActions(["checkLogin", "logout"])
+    ...mapActions(["checkLogin", "logout"]),
+    onLogout() {
+      this.logout();
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-$primary-color: #409eff;
+@import "@/assets/base.scss";
 
 header {
   display: flex;
-  background-color: $primary-color;
+  background-color: $bgColor;
   align-items: center;
   > h1 {
     font-size: 40px;
-    color: white;
+    color: $normalWhite;
     margin: 20px 0;
   }
 }
@@ -63,7 +71,7 @@ header.no-login {
 
   padding: 20px 0;
   > p {
-    color: white;
+    color: $normalWhite;
     margin-bottom: 20px;
   }
 
@@ -80,14 +88,14 @@ header.login {
     display: flex;
     align-items: center;
     > .icon {
-      color: #fff;
+      color: $normalWhite;
       font-size: 30px;
+      margin-left: 15px;
     }
     > .avatar {
       width: 45px;
       height: 45px;
-      margin-left: 15px;
-      border: 1px solid #fff;
+      border: 1px solid $normalWhite;
       border-radius: 50%;
       box-shadow: 0 0 3px #aaa;
     }

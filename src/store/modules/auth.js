@@ -1,4 +1,5 @@
 import auth from '@/api/auth'
+import {Message} from 'element-ui'
 
 export default {
   state: {
@@ -24,6 +25,7 @@ export default {
         .then(res => {
           commit('setUser', { user: res.data })
           commit('setLogin', { isLogin: true })
+          Message.success('登陆成功')
         })
     },
 
@@ -31,6 +33,7 @@ export default {
       let res = await auth.register({ username, password })
       commit('setUser', { user: res.data })
       commit('setLogin', { isLogin: true })
+      Message.success('注册成功')
       return res.data
     },
 
