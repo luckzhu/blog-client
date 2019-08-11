@@ -1,4 +1,4 @@
-import request from '@helpers/request.js'
+import request from '@/helpers/request.js'
 
 let URL = {
   GET_LIST: '/blog',

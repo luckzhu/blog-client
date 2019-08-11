@@ -21,7 +21,11 @@
           src="http://cn.gravatar.com/avatar/1?s=128&d=identicon"
           alt=""
         />
-        <i class="icon el-icon-s-custom "></i>
+
+        <router-link to="/create">
+          <i class="icon el-icon-plus"></i
+        ></router-link>
+
         <i class="icon el-icon-error " @click="onLogout"></i>
       </div>
     </template>
@@ -45,9 +49,9 @@ export default {
   methods: {
     ...mapActions(["checkLogin", "logout"]),
     onLogout() {
-      this.logout().then(()=>{
-        this.$router.push('/')
-      })
+      this.logout().then(() => {
+        this.$router.push("/");
+      });
     }
   }
 };
@@ -78,7 +82,7 @@ header.no-login {
   }
 
   > .button {
-     .el-button {
+    .el-button {
       margin: 0 10px;
     }
   }
@@ -89,7 +93,7 @@ header.login {
   > .icon-avatar {
     display: flex;
     align-items: center;
-    > .icon {
+     .icon {
       color: $normalWhite;
       font-size: 30px;
       margin-left: 15px;

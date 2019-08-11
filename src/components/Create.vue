@@ -3,21 +3,64 @@
     <div id="edit">
       <h1>创建文章</h1>
       <h3>文章标题</h3>
-      <el-input></el-input>
+      <el-input v-model="title"></el-input>
       <p class="msg">限30个字</p>
       <h3>内容简介</h3>
-      <el-input type="textarea" rows="3"></el-input>
+      <el-input
+        v-model="description"
+        type="textarea"
+        :autosize="{ minRows: 4, maxRows: 6 }"
+      ></el-input>
       <p class="msg">限30个字</p>
       <h3>文章内容</h3>
-      <el-input type="textarea" rows="20"></el-input>
+      <el-input
+        v-model="content"
+        type="textarea"
+        :autosize="{ minRows: 20, maxRows: 40 }"
+      ></el-input>
       <p class="msg">限30个字</p>
-      <el-button>确定</el-button>
+
+      <p class="isAtIndex">
+        <el-switch
+          v-model="atIndex"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+        >
+        </el-switch>
+        <label>在首页展示</label>
+      </p>
+      <el-button type="primary" @click="onCreateBlog">发表</el-button>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import blog from "@/api/blog.js";
+export default {
+  data() {
+    return {
+      atIndex: true,
+      title: "",
+      description: "",
+      content: ""
+    };
+  },
+  methods: {
+    onCreateBlog() {
+      blog
+        .createBlog({
+          title: this.title,
+          content: this.content,
+          description: this.description,
+          atIndex: this.atIndex
+        })
+        .then(res => {
+          this.$message.success(res.msg);
+          this.$router.push({path:`/detail/${res.data.id}`})
+        });
+    }
+  }
+};
 </script>
 
 <style lang="scss">
@@ -29,6 +72,19 @@ export default {};
 
   h1 {
     text-align: center;
+  }
+  h3 {
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  .isAtIndex {
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    > label {
+      margin-left: 5px;
+    }
   }
 
   .msg {
