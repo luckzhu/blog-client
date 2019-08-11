@@ -45,7 +45,9 @@ export default {
   methods: {
     ...mapActions(["checkLogin", "logout"]),
     onLogout() {
-      this.logout();
+      this.logout().then(()=>{
+        this.$router.push('/')
+      })
     }
   }
 };
@@ -76,7 +78,7 @@ header.no-login {
   }
 
   > .button {
-    > .el-button {
+     .el-button {
       margin: 0 10px;
     }
   }

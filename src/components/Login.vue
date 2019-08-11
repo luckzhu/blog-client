@@ -42,7 +42,7 @@ export default {
     onLogin() {
       this.login({ username: this.username, password: this.password }).then(
         res => {
-            this.$router.push("/");
+            this.$router.push({path:this.$route.query.redirect || '/' });
         }
       );
     }

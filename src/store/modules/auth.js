@@ -41,6 +41,7 @@ export default {
       await auth.logout()
       commit('setUser', { user: null })
       commit('setLogin', { isLogin: false })
+      Message.success('注销成功')
     },
 
     async checkLogin({ commit, state }) {
