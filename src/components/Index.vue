@@ -1,31 +1,67 @@
 <template>
   <div id="index">
-    <section class="blog-posts">
+    <section class="blog-posts" v-for="blog in blogs" :key="blog.id">
       <div class="item">
         <figure>
           <img
             class="avatar"
-            src="http://cn.gravatar.com/avatar/1?s=128&d=identicon"
-            alt=""
+            :src="blog.user.avatar"
+            :alt="blog.user.username"
           />
-          <figcaption class="name">rouyu</figcaption>
+          <figcaption class="name">{{ blog.user.username }}</figcaption>
         </figure>
 
-        <h3>前端异步大揭秘<span>3天前</span></h3>
+        <h3>
+          {{ blog.title }}<span>{{ blog.createdAt }}</span>
+        </h3>
 
         <p>
-          本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的
-          callback、ES2016中的Promise和Generator、 Node 用于解决回调的co
-          模块、ES2017中的async/await。适合初步接触 Node.js以及少量
-          ES6语法的同学阅读...
+          {{ blog.description }}
         </p>
       </div>
+    </section>
+    <section class="pagination">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        @current-change="onPageChange"
+         :current-page="page"
+      >
+      </el-pagination>
     </section>
   </div>
 </template>
 
 <script>
-export default {};
+import blog from "@/api/blog.js";
+export default {
+  data() {
+    return {
+      blogs: null,
+      page: 1,
+      total: null
+    };
+  },
+  created() {
+    this.page = parseInt(this.$route.query.page) || 1;
+    blog.getIndexBlogs({page:this.page}).then(res => {
+      this.blogs = res.data;
+      this.page = res.page;
+      this.total = res.total;
+    });
+  },
+  methods: {
+    onPageChange(newPage) {
+      blog.getIndexBlogs({ page: newPage }).then(res => {
+        this.blogs = res.data;
+        this.page = res.page;
+        this.total = res.total;
+        this.$router.push({ path: "/", query: { page: newPage } });
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -70,5 +106,9 @@ $textLighterColor: black;
     grid-column: 2;
     grid-row: 2;
   }
+}
+.pagination {
+  display: flex;
+  justify-content: center;
 }
 </style>
