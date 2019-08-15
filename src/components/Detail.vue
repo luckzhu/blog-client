@@ -8,7 +8,7 @@
           <router-link :to="`/user/${user.id}`">{{
             user.username
           }}</router-link>
-          发布于<span> {{ createdAt }}</span>
+          发布于<span> {{ friendlyDate(createdAt) }}</span>
         </p>
       </section>
       <section class="article" v-html="rawContent">

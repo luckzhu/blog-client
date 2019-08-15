@@ -13,7 +13,7 @@
 
         <h3>
           <router-link :to="`detail/${blog.id}`"> {{ blog.title }} </router-link
-          ><span>{{ blog.createdAt }}</span>
+          ><span>{{ friendlyDate( blog.createdAt )}}</span>
         </h3>
         <p>
           <router-link :to="`detail/${blog.id}`">
