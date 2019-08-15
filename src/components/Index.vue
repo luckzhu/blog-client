@@ -12,11 +12,13 @@
         </figure>
 
         <h3>
-          {{ blog.title }}<span>{{ blog.createdAt }}</span>
+          <router-link :to="`detail/${blog.id}`"> {{ blog.title }} </router-link
+          ><span>{{ blog.createdAt }}</span>
         </h3>
-
         <p>
-          {{ blog.description }}
+          <router-link :to="`detail/${blog.id}`">
+            {{ blog.description }}
+          </router-link>
         </p>
       </div>
     </section>
@@ -26,7 +28,7 @@
         layout="prev, pager, next"
         :total="total"
         @current-change="onPageChange"
-         :current-page="page"
+        :current-page="page"
       >
       </el-pagination>
     </section>
@@ -45,7 +47,7 @@ export default {
   },
   created() {
     this.page = parseInt(this.$route.query.page) || 1;
-    blog.getIndexBlogs({page:this.page}).then(res => {
+    blog.getIndexBlogs({ page: this.page }).then(res => {
       this.blogs = res.data;
       this.page = res.page;
       this.total = res.total;
@@ -65,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$textLighterColor: black;
+@import "@/assets/base.scss";
 .item {
   display: grid;
   grid: auto auto / 80px 1fr;
@@ -93,6 +95,10 @@ $textLighterColor: black;
     grid-column: 2;
     grid-row: 1;
     align-self: center;
+
+    > a {
+      color: $textPrimaryColor;
+    }
     & > span {
       color: $textLighterColor;
       display: inline-block;
@@ -103,6 +109,9 @@ $textLighterColor: black;
   }
 
   p {
+    > a {
+      color: $textPrimaryColor;
+    }
     grid-column: 2;
     grid-row: 2;
   }

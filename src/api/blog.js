@@ -17,7 +17,7 @@ export default {
     return this.getBlogs({ page, atIndex: true })
   },
 
-  getBlogsByUserId(userId, { page = 1, atIndex } = { page: 1 }) {
+  getBlogsByUserId(userId, { page = 1, atIndex } = { page: 1, atIndex: false }) {
     return this.getBlogs({ userId, page, atIndex })
   },
 
