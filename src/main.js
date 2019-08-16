@@ -7,6 +7,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store/index'
 import Util from './helpers/util'
+import 'lib-flexible/flexible.js'
 
 Vue.use(ElementUI);
 Vue.use(Util)
