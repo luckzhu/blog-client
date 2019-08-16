@@ -2,7 +2,9 @@
   <div>
     <div id="detail">
       <section class="user-info">
-        <img :src="user.avatar" alt="" class="avatar" />
+        <router-link :to="`/user/${user.id}`">
+          <img :src="user.avatar" alt="" class="avatar"
+        /></router-link>
         <h3>{{ title }}</h3>
         <p>
           <router-link :to="`/user/${user.id}`">{{
@@ -11,39 +13,37 @@
           发布于<span> {{ friendlyDate(createdAt) }}</span>
         </p>
       </section>
-      <section class="article" v-html="markDown">
- 
-      </section>
+      <section class="article" v-html="markDown"></section>
     </div>
   </div>
 </template>
 
 <script>
 import blog from "@/api/blog.js";
-import Marked from "marked"
+import Marked from "marked";
 export default {
   data() {
     return {
       blogId: "",
-      rawContent: '',
+      rawContent: "",
       user: {},
-      createdAt:'',
-      title:''
+      createdAt: "",
+      title: ""
     };
   },
   created() {
     this.blogId = this.$route.params.blogId;
     blog.getDetail({ blogId: this.blogId }).then(res => {
       console.log(res);
-      this.title = res.data.title
-      this.rawContent = res.data.content
-      this.user = res.data.user
-      this.createdAt = res.data.createdAt
+      this.title = res.data.title;
+      this.rawContent = res.data.content;
+      this.user = res.data.user;
+      this.createdAt = res.data.createdAt;
     });
   },
-  computed:{
-    markDown(){
-      return Marked(this.rawContent)
+  computed: {
+    markDown() {
+      return Marked(this.rawContent);
     }
   },
   methods: {}
@@ -63,13 +63,14 @@ export default {
     padding-bottom: 20px;
     border-bottom: 1px solid #ebebeb;
 
-    .avatar {
+    a {
       grid-column: 1;
       grid-row: 1 / span 2;
-
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
+      > .avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+      }
     }
 
     h3 {

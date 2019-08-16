@@ -1,7 +1,7 @@
 <template>
   <header :class="{ login: isLogin, 'no-login': !isLogin }">
     <template v-if="!isLogin">
-      <h1>LET'S SHARE</h1>
+      <h1><router-link to="/">LET'S SHARE</router-link></h1>
       <p>精品博客汇聚</p>
       <div class="button">
         <router-link to="/login"
@@ -14,14 +14,10 @@
     </template>
 
     <template v-if="isLogin">
-      <h1>LET'S SHARE</h1>
+      <h1><router-link to="/">LET'S SHARE</router-link></h1>
       <div class="icon-avatar">
         <router-link to="/my">
-          <img
-            class="avatar"
-            :src="user.avatar"
-            alt=""
-          />
+          <img class="avatar" :src="user.avatar" alt="" />
         </router-link>
         <router-link to="/create">
           <i class="icon el-icon-plus"></i
@@ -65,7 +61,8 @@ header {
   display: flex;
   background-color: $bgColor;
   align-items: center;
-  > h1 {
+  > h1>a {
+    display: inline-block;
     font-size: 40px;
     color: $normalWhite;
     margin: 20px 0;
@@ -99,7 +96,7 @@ header.login {
       font-size: 30px;
       margin-left: 15px;
     }
-     .avatar {
+    .avatar {
       width: 45px;
       height: 45px;
       border: 1px solid $normalWhite;

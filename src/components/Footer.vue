@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <p>© xiedaimala.com 2019 wechat: xiedaimala01</p>
+    <p>© github/luckzhu 2019 wechat: z6196422</p>
   </footer>
 </template>
 
@@ -13,6 +13,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/base.scss";
 footer {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;

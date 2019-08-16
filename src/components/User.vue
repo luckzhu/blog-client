@@ -12,9 +12,16 @@
             <span class="month">{{ splitDate(blog.updatedAt).month }}月</span>
             <span class="year">{{ splitDate(blog.updatedAt).year }}</span>
           </div>
-          <h3>{{ blog.title }}</h3>
+
+          <h3>
+            <router-link :to="`/detail/${blog.id}`">{{
+              blog.title
+            }}</router-link>
+          </h3>
           <p>
-            {{ blog.description }}
+            <router-link :to="`/detail/${blog.id}`">
+              {{ blog.description }}
+            </router-link>
           </p>
         </div>
       </section>
@@ -40,13 +47,13 @@ export default {
       userBlogs: [],
       user: {},
       page: 1,
-      total: ""
+      total: 1
     };
   },
   created() {
     this.userId = this.$route.params.userId;
     console.log(this.userId);
-    this.page = this.$route.query.page || 1
+    this.page = this.$route.query.page || 1;
     blog.getBlogsByUserId(this.userId, { page: this.page }).then(res => {
       this.userBlogs = res.data;
       this.page = res.page;

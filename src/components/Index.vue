@@ -1,37 +1,42 @@
 <template>
-  <div id="index">
-    <section class="blog-posts" v-for="blog in blogs" :key="blog.id">
-      <div class="item">
-        <figure>
-          <img
-            class="avatar"
-            :src="blog.user.avatar"
-            :alt="blog.user.username"
-          />
-          <figcaption class="name">{{ blog.user.username }}</figcaption>
-        </figure>
+  <div class="div">
+    <div id="index">
+      <section class="blog-posts" v-for="blog in blogs" :key="blog.id">
+        <div class="item">
+          <figure>
+            <router-link :to="`/user/${blog.user.id}`">
+              <img
+                class="avatar"
+                :src="blog.user.avatar"
+                :alt="blog.user.username"
+              />
+              <figcaption class="name">{{ blog.user.username }}</figcaption>
+            </router-link>
+          </figure>
 
-        <h3>
-          <router-link :to="`detail/${blog.id}`"> {{ blog.title }} </router-link
-          ><span>{{ friendlyDate( blog.createdAt )}}</span>
-        </h3>
-        <p>
-          <router-link :to="`detail/${blog.id}`">
-            {{ blog.description }}
-          </router-link>
-        </p>
-      </div>
-    </section>
-    <section class="pagination">
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        @current-change="onPageChange"
-        :current-page="page"
-      >
-      </el-pagination>
-    </section>
+          <h3>
+            <router-link :to="`detail/${blog.id}`">
+              {{ blog.title }} </router-link
+            ><span>{{ friendlyDate(blog.createdAt) }}</span>
+          </h3>
+          <p>
+            <router-link :to="`detail/${blog.id}`">
+              {{ blog.description }}
+            </router-link>
+          </p>
+        </div>
+      </section>
+      <section ref="pagination" class="pagination">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="total"
+          @current-change="onPageChange"
+          :current-page="page"
+        >
+        </el-pagination>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -42,7 +47,7 @@ export default {
     return {
       blogs: null,
       page: 1,
-      total: null
+      total: null,
     };
   },
   created() {
@@ -62,7 +67,8 @@ export default {
         this.$router.push({ path: "/", query: { page: newPage } });
       });
     }
-  }
+  },
+   
 };
 </script>
 
@@ -85,7 +91,7 @@ export default {
       height: 60px;
       border-radius: 50%;
     }
-    > figcaption {
+    figcaption {
       font-size: 12px;
       color: $textLighterColor;
     }
@@ -116,8 +122,17 @@ export default {
     grid-row: 2;
   }
 }
+
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
+
+// .pagination-noFulled {
+//   position: absolute;
+//   bottom: 90px;
+//   left: 50%;
+//   transform: translateX(-50%);
+// }
 </style>

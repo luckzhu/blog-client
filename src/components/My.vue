@@ -2,9 +2,10 @@
   <div>
     <div id="my">
       <section class="user-info">
-        <img :src="user.avatar" :alt="user.username" class="avatar" />
-        <h3>{{ user.username }}</h3>
+          <img :src="user.avatar" :alt="user.username" class="avatar" />
+          <h3>{{ user.username }}</h3>
       </section>
+
       <section>
         <div class="item" v-for="blog in userBlogs" :key="blog.id">
           <div class="date">
@@ -12,17 +13,20 @@
             <span class="month">{{ splitDate(blog.updatedAt).month }}月</span>
             <span class="year">{{ splitDate(blog.updatedAt).year }}</span>
           </div>
-          <h3>{{ blog.title }}</h3>
-          <p>
-            {{ blog.description }}
-          </p>
+
+          <router-link :to="`/detail/${blog.id}`">
+            <h3>{{ blog.title }}</h3>
+            <p>
+              {{ blog.description }}
+            </p>
+          </router-link>
           <div class="edit-delete-button">
             <router-link :to="`/Edit/${blog.id}`">
-            <el-button
-              size="mini"
-              type="primary"
-              icon="el-icon-edit"
-            ></el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                icon="el-icon-edit"
+              ></el-button>
             </router-link>
             <el-button
               size="mini"
