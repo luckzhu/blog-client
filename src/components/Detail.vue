@@ -11,7 +11,7 @@
           发布于<span> {{ friendlyDate(createdAt) }}</span>
         </p>
       </section>
-      <section class="article" v-html="rawContent">
+      <section class="article" v-html="markDown">
  
       </section>
     </div>
@@ -20,7 +20,7 @@
 
 <script>
 import blog from "@/api/blog.js";
-// import Marked from "marked"
+import Marked from "marked"
 export default {
   data() {
     return {
@@ -42,9 +42,9 @@ export default {
     });
   },
   computed:{
-    // markDown(){
-    //   return Marked(this.rawContent)
-    // }
+    markDown(){
+      return Marked(this.rawContent)
+    }
   },
   methods: {}
 };

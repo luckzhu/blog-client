@@ -16,12 +16,13 @@
     <template v-if="isLogin">
       <h1>LET'S SHARE</h1>
       <div class="icon-avatar">
-        <img
-          class="avatar"
-          src="http://cn.gravatar.com/avatar/1?s=128&d=identicon"
-          alt=""
-        />
-
+        <router-link to="/my">
+          <img
+            class="avatar"
+            :src="user.avatar"
+            alt=""
+          />
+        </router-link>
         <router-link to="/create">
           <i class="icon el-icon-plus"></i
         ></router-link>
@@ -93,12 +94,12 @@ header.login {
   > .icon-avatar {
     display: flex;
     align-items: center;
-     .icon {
+    .icon {
       color: $normalWhite;
       font-size: 30px;
       margin-left: 15px;
     }
-    > .avatar {
+     .avatar {
       width: 45px;
       height: 45px;
       border: 1px solid $normalWhite;

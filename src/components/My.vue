@@ -1,60 +1,85 @@
 <template>
-  <div id="my">
-    <section class="user-info">
-      <img
-        src="http://cn.gravatar.com/avatar/1?s=128&d=identicon"
-        alt=""
-        class="avatar"
-      />
-      <h3>若愚</h3>
-    </section>
-    <section>
-      <div class="item">
-        <div class="date">
-          <span class="day">20</span>
-          <span class="month">5月</span>
-          <span class="year">2018</span>
+  <div>
+    <div id="my">
+      <section class="user-info">
+        <img :src="user.avatar" :alt="user.username" class="avatar" />
+        <h3>{{ user.username }}</h3>
+      </section>
+      <section>
+        <div class="item" v-for="blog in userBlogs" :key="blog.id">
+          <div class="date">
+            <span class="day">{{ splitDate(blog.updatedAt).date }}</span>
+            <span class="month">{{ splitDate(blog.updatedAt).month }}月</span>
+            <span class="year">{{ splitDate(blog.updatedAt).year }}</span>
+          </div>
+          <h3>{{ blog.title }}</h3>
+          <p>
+            {{ blog.description }}
+          </p>
         </div>
-        <h3>前端异步解密</h3>
-        <p>
-          本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的
-          callback、ES2016中的Promise和Generator、 Node 用于解决回调的co
-          模块、ES2017中的async/await。适合初步接触 Node.js以及少量
-          ES6语法的同学阅读...
-        </p>
-        <div class="actions">
-          <router-link to="/edit">编辑</router-link>
-          <a href="#">删除</a>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="date">
-          <span class="day">20</span>
-          <span class="month">5月</span>
-          <span class="year">2018</span>
-        </div>
-        <h3>前端异步解密</h3>
-        <p>
-          本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的
-          callback、ES2016中的Promise和Generator、 Node 用于解决回调的co
-          模块、ES2017中的async/await。适合初步接触 Node.js以及少量
-          ES6语法的同学阅读...
-        </p>
-        <div class="actions">
-          <router-link to="/edit">编辑</router-link>
-          <a href="#">删除</a>
-        </div>
-      </div>
-    </section>
+      </section>
+      <section class="pagination">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="total"
+          @current-change="onPageChange"
+          :current-page="page"
+        >
+        </el-pagination>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import blog from "../api/blog.js";
+import { mapGetters } from "vuex";
+export default {
+  data() {
+    return {
+      userBlogs: [],
+      page: 1,
+      total: ""
+    };
+  },
+  created() {
+    console.log(this.userId);
+    this.page = this.$route.query.page || 1;
+    blog.getBlogsByUserId(this.user.id, { page: this.page }).then(res => {
+      this.userBlogs = res.data;
+      this.page = res.page;
+      this.total = res.total;
+    });
+  },
+  computed: {
+    ...mapGetters(["user", "isLogin"])
+  },
+  methods: {
+    splitDate(dateStr) {
+      let dateObj = typeof dateStr === "object" ? dateStr : new Date(dateStr);
+      return {
+        date: dateObj.getDate(),
+        month: dateObj.getMonth() + 1,
+        year: dateObj.getFullYear()
+      };
+    },
+    onPageChange(newPage) {
+      blog.getBlogsByUserId(this.user.id, { page: newPage }).then(res => {
+        this.userBlogs = res.data;
+        this.page = res.page;
+        this.total = res.total;
+        this.$router.push({
+          path: "/my",
+          query: { page: newPage }
+        });
+      });
+    }
+  }
+};
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 @import "../assets/base.scss";
 
 #my,
@@ -110,8 +135,7 @@ export default {};
 
     p {
       grid-column: 2;
-      grid-row: 2;
-      margin-top: 0;
+      grid-row: 2 / span 2;
     }
 
     .actions {
@@ -124,5 +148,9 @@ export default {};
       }
     }
   }
+}
+.pagination {
+  display: flex;
+  justify-content: center;
 }
 </style>
