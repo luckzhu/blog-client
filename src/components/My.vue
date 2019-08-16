@@ -16,6 +16,21 @@
           <p>
             {{ blog.description }}
           </p>
+          <div class="edit-delete-button">
+            <router-link :to="`/Edit/${blog.id}`">
+            <el-button
+              size="mini"
+              type="primary"
+              icon="el-icon-edit"
+            ></el-button>
+            </router-link>
+            <el-button
+              size="mini"
+              type="primary"
+              icon="el-icon-delete"
+              @click="onDelete(blog.id)"
+            ></el-button>
+          </div>
         </div>
       </section>
       <section class="pagination">
@@ -40,11 +55,10 @@ export default {
     return {
       userBlogs: [],
       page: 1,
-      total: ""
+      total: 1
     };
   },
   created() {
-    console.log(this.userId);
     this.page = this.$route.query.page || 1;
     blog.getBlogsByUserId(this.user.id, { page: this.page }).then(res => {
       this.userBlogs = res.data;
@@ -74,6 +88,28 @@ export default {
           query: { page: newPage }
         });
       });
+    },
+    onDelete(blogId) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          blog.deleteBlog({ blogId }).then(() => {
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+            this.userBlogs = this.userBlogs.filter(blog => blog.id !== blogId);
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };
@@ -135,10 +171,11 @@ export default {
 
     p {
       grid-column: 2;
-      grid-row: 2 / span 2;
+      grid-row: 2;
+      margin: 8px 0;
     }
 
-    .actions {
+    .edit-delete-button {
       grid-column: 2;
       grid-row: 3;
       font-size: 12px;
