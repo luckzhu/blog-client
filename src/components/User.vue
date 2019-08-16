@@ -2,62 +2,80 @@
   <div>
     <div id="user">
       <section class="user-info">
-        <img
-          src="http://cn.gravatar.com/avatar/1?s=128&d=identicon"
-          alt=""
-          class="avatar"
-        />
-        <h3>若愚</h3>
+        <img :src="user.avatar" :alt="user.username" class="avatar" />
+        <h3>{{ user.username }}</h3>
       </section>
       <section>
-        <div class="item">
+        <div class="item" v-for="blog in userBlogs" :key="blog.id">
           <div class="date">
-            <span class="day">20</span>
-            <span class="month">5月</span>
-            <span class="year">2018</span>
+            <span class="day">{{ splitDate(blog.updatedAt).date }}</span>
+            <span class="month">{{ splitDate(blog.updatedAt).month }}月</span>
+            <span class="year">{{ splitDate(blog.updatedAt).year }}</span>
           </div>
-          <h3>前端异步解密</h3>
+          <h3>{{ blog.title }}</h3>
           <p>
-            本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的
-            callback、ES2016中的Promise和Generator、 Node 用于解决回调的co
-            模块、ES2017中的async/await。适合初步接触 Node.js以及少量
-            ES6语法的同学阅读...
+            {{ blog.description }}
           </p>
         </div>
-
-        <div class="item">
-          <div class="date">
-            <span class="day">20</span>
-            <span class="month">5月</span>
-            <span class="year">2018</span>
-          </div>
-          <h3>前端异步解密</h3>
-          <p>
-            本文以一个简单的文件读写为例，讲解了异步的不同写法，包括 普通的
-            callback、ES2016中的Promise和Generator、 Node 用于解决回调的co
-            模块、ES2017中的async/await。适合初步接触 Node.js以及少量
-            ES6语法的同学阅读...
-          </p>
-        </div>
+      </section>
+      <section class="pagination">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="total"
+          @current-change="onPageChange"
+          :current-page="page"
+        >
+        </el-pagination>
       </section>
     </div>
   </div>
 </template>
 
 <script>
-import blog from "../api/blog.js"
+import blog from "../api/blog.js";
 export default {
-  data(){
+  data() {
     return {
-      user: ''
-    }
+      userBlogs: [],
+      user: {},
+      page: 1,
+      total: ""
+    };
   },
-  created(){
-    this.userId = this.$route.params.userId
-    console.log(this.userId)
-    blog.getBlogsByUserId({userId:this.userId}).then(res=>{
-      console.log(res)
-    })
+  created() {
+    this.userId = this.$route.params.userId;
+    console.log(this.userId);
+    this.page = this.$route.query.page || 1
+    blog.getBlogsByUserId(this.userId, { page: this.page }).then(res => {
+      this.userBlogs = res.data;
+      this.page = res.page;
+      this.total = res.total;
+      if (res.data.length > 0) {
+        this.user = res.data[0].user;
+      }
+    });
+  },
+  methods: {
+    splitDate(dateStr) {
+      let dateObj = typeof dateStr === "object" ? dateStr : new Date(dateStr);
+      return {
+        date: dateObj.getDate(),
+        month: dateObj.getMonth() + 1,
+        year: dateObj.getFullYear()
+      };
+    },
+    onPageChange(newPage) {
+      blog.getBlogsByUserId(this.userId, { page: newPage }).then(res => {
+        this.userBlogs = res.data;
+        this.page = res.page;
+        this.total = res.total;
+        this.$router.push({
+          path: `/user/${this.userId}`,
+          query: { page: newPage }
+        });
+      });
+    }
   }
 };
 </script>
@@ -65,11 +83,12 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/base.scss";
 
-#my,#user {
+#my,
+#user {
   .user-info {
     display: grid;
     grid: auto auto / 80px 1fr;
-    
+
     margin-top: 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid #ebebeb;
@@ -91,7 +110,7 @@ export default {
 
   .item {
     display: grid;
-    grid: auto  auto auto / 80px 1fr;
+    grid: auto auto auto / 80px 1fr;
     margin: 20px 0;
 
     .date {
@@ -117,8 +136,7 @@ export default {
 
     p {
       grid-column: 2;
-      grid-row: 2;
-      margin-top: 6px;
+      grid-row: 2 / span 2;
     }
 
     .actions {
@@ -129,10 +147,11 @@ export default {
       a {
         color: $themeLighterColor;
       }
-      
     }
-
   }
-
+}
+.pagination {
+  display: flex;
+  justify-content: center;
 }
 </style>
